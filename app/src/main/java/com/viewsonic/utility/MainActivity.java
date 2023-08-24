@@ -131,16 +131,28 @@ public class MainActivity extends AppCompatActivity {
 
                  */
              //   String macadd=NetUtil.getWiFiMacAddress();
+
+
+                try {
+                    String sourceFolderPath = "/storage/emulated/0/Android/data/com.viewsonic.utility/";
+                    String zipFilePath = "/storage/emulated/0/Android/data/com.viewsonic.utility.zip";
+                    String password = "your_password_here";
+                    ZipUtility.zipAndEncryptFolder(sourceFolderPath, zipFilePath, password);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+  /*
                 String Filename=FileUtil.CreateLogFileName(4);
 
                 try {
-             //       FileUtil.writeLogToFile(Filename,"Test");
-             //       FileUtil.writeLogToFile(Filename,"444");
-             //       FileUtil.writeLogToFile(Filename,TimeUtil.getCurrentTimeMillisFormatted());
+                    FileUtil.writeLogToFile(Filename,"Test");
+                    FileUtil.writeLogToFile(Filename,"444");
+                    FileUtil.writeLogToFile(Filename,TimeUtil.getCurrentTimeMillisFormatted());
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
-
+*/
                 //   FileUtil.writeLogToFile();
 /*
                 File A=new File(FileUtil.fullrootfolder);
