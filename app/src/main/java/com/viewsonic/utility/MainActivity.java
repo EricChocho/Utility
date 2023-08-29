@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -51,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUEST_EXTERNAL_STORAGE) {
             boolean allPermissionsGranted = true;
 
@@ -66,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
                 executeAppLogic();
             } else {
                 // 使用者拒絕了權限，這裡你可以顯示一個訊息給使用者，然後退出應用程式
-                Toast.makeText(this, "需要讀取和寫入外部儲存權限來執行應用程式",    Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "需要讀取和寫入外部儲存權限來執行應用程式", Toast.LENGTH_SHORT).show();
                 finish(); // 退出應用程式
             }
         }
@@ -104,6 +107,22 @@ public class MainActivity extends AppCompatActivity {
                 String s2="//storage/emulated/0/Android/data/"+FileUtil.rootfolfer+"23082415";
                 tv1.setText(s2+":"+exist.toString());
                */
+
+              //  Logger.show("click");
+                Log.i("ERic","Eric !!!  Bt1");
+
+                Intent intent = new Intent(MainActivity.this, VsUtilService.class);
+                //startService(                                                                                                                                                                                                                                                                                                                                                                             intent);
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    Log.i("ERic","Eric !!!  Bt1 2");
+                    startForegroundService(intent);
+                    //  startService(intent);
+                }
+                else
+                    startService(intent);
+
+
 
 
             }
