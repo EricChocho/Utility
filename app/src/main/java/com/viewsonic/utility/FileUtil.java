@@ -24,16 +24,39 @@ public class FileUtil {
 
     }
 
-    public static void writeLogToFile(String fileName, String logLine) throws IOException {
+    public static void writeLogToFile(String fileName, String logLine,Boolean Append) throws IOException {
 
         File A=new File(FileUtil.fullrootfolder);
         if(!A.exists()) A.mkdir();
 
-        File B=new File(FileUtil.fullrootfolder+"/"+TimeUtil.getCurrentTimeforFolder());
+        String WorkFolder=TimeUtil.getCurrentTimeforFolder();
+
+        File B=new File(FileUtil.fullrootfolder+"/"+WorkFolder);
         Log.i("Eric","AAA:"+B.getPath());
         Log.i("Eric","AAA:"+B.exists());
 
-        if(!B.exists())B.mkdir();
+        if(!B.exists()){
+
+            if(VsUtilService.CurrentWorkFolder!="")
+            {
+                VsUtilService.LastWorkFolder = VsUtilService.CurrentWorkFolder;
+                VsUtilService.CurrentWorkFolder=WorkFolder;
+                VsUtilService.NeedUpdate =true;
+            }
+            else
+            {
+
+                VsUtilService.LastWorkFolder ="" ;
+                VsUtilService.CurrentWorkFolder=WorkFolder;
+                VsUtilService.NeedUpdate =false;
+
+            }
+            B.mkdir();
+        }
+        else {
+
+
+        }
 
         File file = new File(B.getPath()+"/"+fileName);
 
@@ -47,7 +70,7 @@ public class FileUtil {
             }
 
             // 使用 FileOutputStream 寫入檔案
-            FileOutputStream fos = new FileOutputStream(file, true); // true 表示追加模式
+            FileOutputStream fos = new FileOutputStream(file, Append); // true 表示追加模式
             fos.write(logLine.getBytes());
             fos.write(System.getProperty("line.separator").getBytes()); // 換行符號
             fos.close();

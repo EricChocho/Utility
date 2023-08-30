@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -17,6 +18,9 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -89,8 +93,45 @@ public class MainActivity extends AppCompatActivity {
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String s2="IP:"+NetUtil.getLocalIPAddress()+"\n MAc:"+NetUtil.getWiFiMacAddress();
+              /*  String s2="IP:"+NetUtil.getLocalIPAddress()+"\n MAc:"+NetUtil.getWiFiMacAddress();
                 tv1.setText(s2);
+
+               */
+
+                try {
+
+                    long bootTimeMillis = System.currentTimeMillis() - SystemClock.uptimeMillis();
+
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmmss", Locale.getDefault());
+
+// 将时间戳转换为指定格式的日期时间字符串
+                    String formattedDate = sdf.format(new Date(bootTimeMillis));
+                   VsUtilService.setGroupID();
+
+                    Log.i("Eric","Eric 0830:"+"PowerA_G"+ VsUtilService.GroupID+"   :E"+TimeUtil.getCurrentTimeMillisFormatted());
+
+
+                    Log.i("Eric","Eric 0830:"+"PowerA_"+ formattedDate+"   :E"+TimeUtil.getCurrentTimeMillisFormatted());
+
+                    Log.i("Eric","Eric 0830:"+"PowerA_"+ System.currentTimeMillis()+"   :E"+TimeUtil.getCurrentTimeMillisFormatted());
+                    Log.i("Eric","Eric 0830:"+"PowerA_"+ SystemClock.uptimeMillis() +"   :E"+TimeUtil.getCurrentTimeMillisFormatted());
+                    Log.i("Eric","Eric 0830:"+"PowerA_"+ SystemClock.elapsedRealtime() +"   :E"+TimeUtil.getCurrentTimeMillisFormatted());
+
+                    Log.i("Eric","Eric 0830:"+"PowerA_"+TimeUtil.getBootTimeMillis()+"   :E"+TimeUtil.getCurrentTimeMillisFormatted());
+                    Log.i("Eric","Eric 0830:"+"PowerA_"+TimeUtil.getFormattedBootTime()+"   :E"+TimeUtil.getCurrentTimeMillisFormatted());
+
+                    Log.i("Eric","Eric 0830:"+"PowerA_"+TimeUtil.getFormattedBootTime2()+"   :E"+TimeUtil.getCurrentTimeMillisFormatted());
+                    Log.i("Eric","Eric 0830:"+"PowerA_G"+ VsUtilService.GroupID+"   :E"+TimeUtil.getCurrentTimeMillisFormatted());
+
+                    //  FileUtil.writeLogToFile("PowerA_"+TimeUtil.getBootTimeMillis(),"1_"+TimeUtil.getCurrentTimeMillisFormatted() ,false);
+                }/* catch (IOException e) {
+                    throw new RuntimeException(e);
+                  //  e.toString();
+                }*/
+                catch (Exception e)
+                {
+
+                }
             }
         });
 
@@ -151,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
                  */
              //   String macadd=NetUtil.getWiFiMacAddress();
 
-
+/* Try ZIP
                 try {
                     String sourceFolderPath = "/storage/emulated/0/Android/data/com.viewsonic.utility/";
                     String zipFilePath = "/storage/emulated/0/Android/data/com.viewsonic.utility.zip";
@@ -160,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-
+*/
   /*
                 String Filename=FileUtil.CreateLogFileName(4);
 

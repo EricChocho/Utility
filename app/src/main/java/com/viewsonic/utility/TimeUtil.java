@@ -12,9 +12,16 @@ import java.util.TimeZone;
 
 public class TimeUtil {
 
+
+
+
     public static long getBootTimeMillis() {
-        return SystemClock.uptimeMillis();
+        return (System.currentTimeMillis()-SystemClock.uptimeMillis());
+
     }
+
+
+
 
     public static long getCurrentTimeMillis() {
         return System.currentTimeMillis();
@@ -38,6 +45,14 @@ public class TimeUtil {
     public static String getCurrentTimeMillisFormatted() {
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        String formattedCurrentTime = sdf.format(new Date(System.currentTimeMillis()));
+        return formattedCurrentTime;
+    }
+
+
+    public static String getCurrentTimeMillisForPowerLog() {
+
+        SimpleDateFormat sdf = new SimpleDateFormat("mmss", Locale.getDefault());
         String formattedCurrentTime = sdf.format(new Date(System.currentTimeMillis()));
         return formattedCurrentTime;
     }

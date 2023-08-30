@@ -19,7 +19,7 @@ public class Bootcomplited extends BroadcastReceiver {
        Log.i("VsUtilService","Eric 2023.08.29  Receive Boot Complieted");
                //Logger.show("2023.08.02 In Complieter");
         Intent serviceLauncher = new Intent(context, VsUtilService.class);
-        //    Log.i("Eric","BootFinish44");
+            Log.i("Eric","Erid !!!!!!　BootFinish44");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             context.startForegroundService(serviceLauncher);
         }
