@@ -1,5 +1,7 @@
 package com.viewsonic.utility;
 
+
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -8,6 +10,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.os.SystemClock;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -16,8 +19,15 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import net.lingala.zip4j.core.ZipFile;
+
+import org.apache.commons.net.ftp.FTP;
+import org.apache.commons.net.ftp.FTPClient;
+
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -28,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     TextView tv1;
     int CurrentDeviceW,CurrentDeviceH;
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
-
+    public static final int DEFAULT_FTP_PORT = 21;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -172,6 +182,105 @@ public class MainActivity extends AppCompatActivity {
         button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                VsUtilService.CurrentWorkFolder="23090410";
+                VsUtilService.LastWorkFolder="23090409";
+                VsUtilService.StartUpdate=false;
+                VsUtilService.NeedUpdate=true;
+
+                Log.i("Eric","Eric 2023.09.04 Need Update");
+                Log.i("Eric","Eric 2023.09.04 Need Update"+VsUtilService.NeedUpdate);
+
+                Log.i("Eric","Eric 2023.09.04 Need Update Current"+VsUtilService.CurrentWorkFolder);
+                Log.i("Eric","Eric 2023.09.04 Need Update L"+VsUtilService.LastWorkFolder);
+
+                /*
+                Thread logPowerThread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.i("Eric","Eric !!! Bt1 .click");
+
+                        //1  File file=new File("/storage/emulated/0/Android/com.viewsonic.utility/1.pdf");
+                        // /storage/emulated/0/android/data/com.viewsonic.utility
+                        //  File file2=new File("/storage/emulated/0/Movies/1.zip");
+                        File file=new File("/storage/emulated/0/android/data/com.viewsonic.utility/209111461311212110_23083113.zip");
+                        //     File file=new File("/storage/emulated/0/Movies/232123423_23083113.zip");
+                        //    File file=new File("/storage/emulated/0/Movies/1.zip");
+
+                        Log.i("Eric","2023.0723 EE"+file.exists());
+                        Log.i("Eric","2023.0723 EE"+file.getName());
+
+                        Log.i("Eric","2023.0723 EE"+file.getPath());
+
+                        try {
+
+                            if (file == null)
+                            {
+                            }
+                            else{
+
+
+                                        Log.i("Eric","2023.0723 EE A!"+file.getPath());
+                                InputStream inputStream=new FileInputStream(file);
+                                Log.i("Eric","2023.0723 A"+file.getPath());
+                                //  if (!export(inputStream, "209111461311212110_23083113.zip", "/", "172.21.8.244",
+                                //          "viewsonic","$viewsonic0722")) {
+                                if (!FTPUtil.export(inputStream, "209111461311212110_23083113.zip", "/2356/2346", "172.21.8.244",
+                                        "viewsonic","$viewsonic0722")) {
+
+
+                                    //                      Toast.makeText(this, "An error occurred while exporting " + file.getName(), Toast.LENGTH_SHORT).show();
+                                    //file.clear();
+                                    Log.i("Eric","Eric 2023.0904 FTP　error ");
+
+                                }
+                                else
+                                {
+
+                                    Log.i("Eric","Eric 2023.0904 FTP　OK ");
+
+                                }
+
+
+
+                            }
+                            Log.i("Eric","2023.0723 B"+file.getPath());
+
+                        }
+                        catch (Exception e)
+                        {
+                            Log.i("Eric","Eric error sesrr e"+e.toString());
+
+                        }
+                    }
+                });
+                logPowerThread.start(); // 启动线程
+
+*/
+
+                /*  ZIP
+                 try {
+                    String sourceFolderPath = "/storage/emulated/0/Android/data/com.viewsonic.utility/23083113";
+                    String zipFilePath = "/storage/emulated/0/Android/data/com.viewsonic.utility/"+NetUtil.getWiFiMacAddressforFilename(NetUtil.getWiFiMacAddress())+"_23083113.zip";
+                    String password = "$viewsonic0722";
+                    ZipUtility.zipAndEncryptFolder(sourceFolderPath, zipFilePath, password);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+*/
+                /*
+                Log.i("VS Player", "Android API Version: " + Build.VERSION.SDK_INT);
+                Log.i("VS Player", "Android OS Version " + Build.VERSION.RELEASE);
+*/
+                /*
+                LocaleUtil localeUtil=new LocaleUtil(MainActivity.this);
+                Log.i("Eric","Eric 20230832 !!! "+localeUtil.getCurrentLocale());
+*/
+                /*
+                Log.i("Eric","Eric 20230832 !!! "+TimeUtil.getBootTimeString());
+
+                */
+
                 /*
                 Boolean succeed = FileUtil.MakeDir("/storage/emulated/0/Android/data",FileUtil.rootfolfer);
 
@@ -264,1023 +373,33 @@ public class MainActivity extends AppCompatActivity {
         Log.i("VS Download", "UI " + CurrentDeviceW + " X " +CurrentDeviceH);
         String s1= "Board " + Build.BOARD+"\nBrand  " + Build.BRAND+"\nDevice " + Build.DEVICE
                     +"\nUI " + CurrentDeviceW + " X " +CurrentDeviceH;
-        tv1.setText(s1
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        );
+        tv1.setText(s1);
 
     }
+
+    private boolean export(InputStream stream, String name, String directory, String address, String username, String password) {
+        try {
+
+
+            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().permitAll().build());
+
+            final FTPClient client = new FTPClient();
+            client.connect(address, DEFAULT_FTP_PORT);
+            if (client.login(username, password)) {
+                client.makeDirectory(address);
+                client.setFileType(FTP.ASCII_FILE_TYPE);
+                client.enterLocalPassiveMode();
+                client.storeFile("./" + directory + "/" + name, stream);
+
+                client.logout();
+                client.disconnect();
+                return true;
+            }
+        } catch (Exception exception) {
+            return false;
+        }
+        return false;
+    }
+
+
 }

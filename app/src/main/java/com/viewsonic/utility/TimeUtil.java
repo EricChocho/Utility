@@ -22,6 +22,20 @@ public class TimeUtil {
 
 
 
+    public static String getBootTimeString() {
+
+        long timeDifference = System.currentTimeMillis() - SystemClock.uptimeMillis();
+
+        // 定义日期时间格式
+        SimpleDateFormat sdf = new SimpleDateFormat("MM:dd:HH:mm:ss.", Locale.getDefault());
+        sdf.setTimeZone(TimeZone.getDefault()); // 设置时区为默认时区
+
+        // 将时间差值转换为指定格式的日期时间字符串
+        String formattedTimeDifference = sdf.format(new Date(timeDifference));
+         return  formattedTimeDifference;
+    }
+
+
 
     public static long getCurrentTimeMillis() {
         return System.currentTimeMillis();
@@ -31,6 +45,9 @@ public class TimeUtil {
     public static String getCurrentTimeforFolder() {
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHH", Locale.getDefault());
+     //   SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmm", Locale.getDefault());
+
+
         String formattedCurrentTime = sdf.format(new Date(System.currentTimeMillis()));
         return formattedCurrentTime;
     }

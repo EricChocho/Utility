@@ -42,6 +42,10 @@ public class FileUtil {
                 VsUtilService.LastWorkFolder = VsUtilService.CurrentWorkFolder;
                 VsUtilService.CurrentWorkFolder=WorkFolder;
                 VsUtilService.NeedUpdate =true;
+
+
+                Log.i("Eric","20230904 Update "+VsUtilService.LastWorkFolder);
+
             }
             else
             {
@@ -54,7 +58,7 @@ public class FileUtil {
             B.mkdir();
         }
         else {
-
+                VsUtilService.CurrentWorkFolder = WorkFolder;
 
         }
 

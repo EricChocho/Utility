@@ -31,4 +31,22 @@ public class ZipUtility {
         }
     }
 
+    public static void zipFolder(String sourceFolderPath, String zipFilePath) {
+        try {
+            ZipFile zipFile = new ZipFile(zipFilePath);
+
+            ZipParameters parameters = new ZipParameters();
+            parameters.setCompressionMethod(Zip4jConstants.DEFLATE_LEVEL_MAXIMUM);
+            parameters.setCompressionLevel(Zip4jConstants.DEFLATE_LEVEL_NORMAL);
+          //  parameters.setEncryptFiles(true);
+         //   parameters.setEncryptionMethod(Zip4jConstants.ENC_METHOD_STANDARD);
+          //  parameters.setPassword(password);
+
+            zipFile.addFolder(new File(sourceFolderPath), parameters);
+            System.out.println("Folder compressed and encrypted successfully.");
+        } catch (ZipException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
