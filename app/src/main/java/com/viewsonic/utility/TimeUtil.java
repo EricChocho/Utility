@@ -6,6 +6,7 @@ import android.os.SystemClock;
 import android.provider.Settings;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -20,6 +21,11 @@ public class TimeUtil {
 
     }
 
+    public static String convertMillisToDateTime(long millis) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault());
+        Date date = new Date(millis);
+        return dateFormat.format(date);
+    }
 
 
     public static String getBootTimeString() {
@@ -51,6 +57,26 @@ public class TimeUtil {
         String formattedCurrentTime = sdf.format(new Date(System.currentTimeMillis()));
         return formattedCurrentTime;
     }
+
+    public static String getYearDateTimeforFolder(Date date ) {
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHH", Locale.getDefault());
+        //   SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmm", Locale.getDefault());
+
+
+        String formattedCurrentTime = sdf.format(date);
+        return formattedCurrentTime;
+    }
+
+
+    public static long getCurrentHourInMillis() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar.getTimeInMillis();
+    }
+
 
     public static String getCurrentTimeforFilename() {
 

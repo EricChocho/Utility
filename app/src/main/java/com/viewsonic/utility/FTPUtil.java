@@ -32,8 +32,8 @@ final static  String username="viewsonic";
     final static  String pw="$viewsonic0722";
 //////////////////////////////////
 
-    final static  String address2=    "3.24.106.158  ";
-    final static  String pw2=" e4rH$UX2";
+    final static  String address2=    "3.24.106.158";
+    final static  String pw2="e4rH$UX2";
 //////////////////////////////////
 
 

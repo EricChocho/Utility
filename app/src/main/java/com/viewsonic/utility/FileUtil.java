@@ -6,6 +6,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
 
 public class FileUtil {
 
@@ -22,6 +24,42 @@ public class FileUtil {
 
         return  success;
 
+    }
+    static String  findfolder;
+    public static String FindLastWorkFolder(Calendar now){
+        findfolder="";
+
+     //   String sourceFolderPath = "/storage/emulated/0/Android/data/com.viewsonic.utility/"+LastWorkFolder;
+        String sourceFolderPath = "/storage/emulated/0/Android/data/com.viewsonic.utility/";
+
+       // Calendar date=Calendar.getInstance();
+        //      date.add(Calendar.HOUR_OF_DAY, -1);
+        for (int i=1;i<25;i++)
+        {
+            now.add(Calendar.HOUR_OF_DAY,-1);
+            Date date2 = now.getTime();
+            findfolder= TimeUtil.getYearDateTimeforFolder(date2);
+            Log.i("Eric","Eric "+i+" :"+findfolder);
+            File b=new File(sourceFolderPath+findfolder);
+            Log.i("Eric","Eric "+i+" :"+b.getPath());
+            Log.i("Eric","Eric "+i+" :"+b.exists());
+            if( b.exists()){
+
+                break;
+            }
+            else {
+                findfolder="";
+            }
+
+
+
+
+        }
+
+        Log.i("Eric"," Eric  Find :"+findfolder);
+
+
+        return findfolder;
     }
 
     public static void writeLogToFile(String fileName, String logLine,Boolean Append) throws IOException {
@@ -59,6 +97,11 @@ public class FileUtil {
         }
         else {
                 VsUtilService.CurrentWorkFolder = WorkFolder;
+
+
+
+
+
 
         }
 

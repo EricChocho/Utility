@@ -91,19 +91,19 @@ public class NetUtil {
 
         try {
                 // 去除冒号并将小写字母替换为数字
-                convertedMac = macAddress.replace(":", "")
-                        .replace("a", "10")
-                        .replace("b", "11")
-                        .replace("c", "12")
-                        .replace("d", "13")
-                        .replace("e", "14")
-                        .replace("f", "15")
-                        .replace("A", "10")
-                        .replace("B", "11")
-                        .replace("C", "12")
-                        .replace("D", "13")
-                        .replace("E", "14")
-                        .replace("F", "15");
+                convertedMac = macAddress.replace(":", "");
+                     //   .replace("a", "10")
+                    //    .replace("b", "11")
+                    //    .replace("c", "12")
+                    //    .replace("d", "13")
+                    //    .replace("e", "14")
+                   //     .replace("f", "15")
+                  //      .replace("A", "10")
+                 //       .replace("B", "11")
+                 //      .replace("C", "12")
+                 //       .replace("D", "13")
+                //        .replace("E", "14")
+                 //       .replace("F", "15");
 
                 return  convertedMac;
 

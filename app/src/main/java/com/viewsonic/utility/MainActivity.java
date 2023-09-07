@@ -2,16 +2,25 @@ package com.viewsonic.utility;
 
 
 
+import static com.viewsonic.utility.TimeUtil.getCurrentHourInMillis;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import android.app.Activity;
+import android.app.AppOpsManager;
+import android.app.usage.UsageStats;
+import android.app.usage.UsageStatsManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.os.SystemClock;
+import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -28,8 +37,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
@@ -40,20 +54,36 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     public static final int DEFAULT_FTP_PORT = 21;
 
+    static Activity act;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        act=MainActivity.this;
+
         if (PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                || PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                || PackageManager.PERMISSION_GRANTED != ActivityCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) ) {
             // 如果沒有權限，就向使用者要求權限
             ActivityCompat.requestPermissions(this,
                     new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.READ_EXTERNAL_STORAGE},
                     REQUEST_EXTERNAL_STORAGE);
-        } else {
-            // 已經有權限，執行程式邏輯
+        }
+        else if(!AppUsingUtil.hasUsageStatsPermission(MainActivity.this)) {
+            AppUsingUtil.getStatsPermission();
+        }
+        if (AppUsingUtil.hasUsageStatsPermission(MainActivity.this))
+        {
             executeAppLogic();
+        }
+
+        else {
+            // 已經有權限，執行程式邏輯
+
+
+            this.finish();
+
         }
 
 
@@ -62,6 +92,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+
 
 
     @Override
@@ -81,12 +113,26 @@ public class MainActivity extends AppCompatActivity {
             if (allPermissionsGranted) {
                 // 使用者授權了權限，執行程式邏輯
                 executeAppLogic();
-            } else {
+            }
+            else {
                 // 使用者拒絕了權限，這裡你可以顯示一個訊息給使用者，然後退出應用程式
                 Toast.makeText(this, "需要讀取和寫入外部儲存權限來執行應用程式", Toast.LENGTH_SHORT).show();
                 finish(); // 退出應用程式
             }
-        }
+        }/*
+        else if (requestCode == AppUsingUtil.REQUEST_USAGE_ACCESS) {
+
+            Log.i("Eric","Eric A");
+                // 用户返回了使用访问设置页面
+                if (AppUsingUtil.hasUsageStatsPermission()) {
+                    // 用户已授予使用访问权限
+                    // 在这里处理相应的逻辑
+                } else {
+                    Log.i("Eric","Eric B");
+                    // 用户未授予使用访问权限
+                    // 在这里处理未授予权限的情况
+                }
+        }*/
     }
 
     private void executeAppLogic() {
@@ -182,9 +228,32 @@ public class MainActivity extends AppCompatActivity {
         button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Calendar date=Calendar.getInstance();
+                FileUtil.FindLastWorkFolder(date);
+                /*
+               // VsUtilService.LogApp();
 
-                VsUtilService.CurrentWorkFolder="23090410";
-                VsUtilService.LastWorkFolder="23090409";
+              //  File B=new File(FileUtil.fullrootfolder+"/"+WorkFolder);
+                Calendar date=Calendar.getInstance();
+         //      date.add(Calendar.HOUR_OF_DAY, -1);
+                Date date2 = date.getTime();
+
+                Log.i("Eric","Eric time!!"+TimeUtil.getYearDateTimeforFolder(date2));
+
+                VsUtilService.CurrentWorkFolder=TimeUtil.getYearDateTimeforFolder(date2);
+                VsUtilService.LastWorkFolder=TimeUtil.getYearDateTimeforFolder(date2);
+                VsUtilService.StartUpdate=false;
+                VsUtilService.NeedUpdate=true;
+
+*/
+
+// 使用DateTimeFormatter格式化LocalDateTime对象
+                //String formattedDateTime = date.format(formatter);
+
+            //    getYearDateTimeforFolder(Date date )
+                /*
+                VsUtilService.CurrentWorkFolder="23090515";
+                VsUtilService.LastWorkFolder="23090516";
                 VsUtilService.StartUpdate=false;
                 VsUtilService.NeedUpdate=true;
 
@@ -193,7 +262,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Log.i("Eric","Eric 2023.09.04 Need Update Current"+VsUtilService.CurrentWorkFolder);
                 Log.i("Eric","Eric 2023.09.04 Need Update L"+VsUtilService.LastWorkFolder);
-
+*/
                 /*
                 Thread logPowerThread = new Thread(new Runnable() {
                     @Override
