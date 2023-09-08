@@ -22,7 +22,7 @@ public class TimeUtil {
     }
 
     public static String convertMillisToDateTime(long millis) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss", Locale.getDefault());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MMddHHmmssSSS", Locale.getDefault());
         Date date = new Date(millis);
         return dateFormat.format(date);
     }
@@ -92,6 +92,18 @@ public class TimeUtil {
         return formattedCurrentTime;
     }
 
+
+    public static String getTimePeriodFromMillis(long D1) {
+      //  long hours = (D1 / (1000 * 60 * 60)) % 24;
+        long hours = (D1 / (1000 * 60 * 60));
+        long minutes = (D1 / (1000 * 60)) % 60;
+        long seconds = (D1 / 1000) % 60;
+        long milliseconds = D1 % 1000;
+
+        // 创建格式化字符串
+        String formattedTime = String.format("%04d%02d%02d%03d", hours, minutes, seconds, milliseconds);
+        return  formattedTime;
+    }
 
     public static String getCurrentTimeMillisForPowerLog() {
 

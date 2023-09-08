@@ -100,6 +100,11 @@ public class VsUtilService extends Service {
 // 格式化 Date 对象为所需的字符串格式
         String formattedTime = dateFormat.format(date);
         Log.i("VsUtilService", "Eric 2023.08.29 Service started onCreate ."+formattedTime);
+        try {
+            FileUtil.writeLogToFile("VsUtilService_onCreate_" + TimeUtil.getCurrentTimeforFilename() + ".log", " Service started onCreate", true);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         super.onCreate();
         // myapp = new MyAPP();
@@ -295,7 +300,7 @@ public class VsUtilService extends Service {
         return true;
     }
 
-
+    long D1=0,D2=0,D3=0,D4=0;
     public  boolean LogAppUsing()
     {     Log.i("Eric","Eric Enter LogAppUsing()");
         try {
@@ -312,12 +317,12 @@ public class VsUtilService extends Service {
 
                     String RecordCurrentTime = TimeUtil.getCurrentTimeforFilename();
 
-                    UsageStatsManager usageStatsManager = (UsageStatsManager) this.getSystemService(Context.USAGE_STATS_SERVICE);
+                    UsageStatsManager usageStatsManager = (UsageStatsManager) getSystemService(Context.USAGE_STATS_SERVICE);
 
 
-                    Long CheckStartTime = System.currentTimeMillis() - SystemClock.uptimeMillis();
-                    Long CheckEndTime = System.currentTimeMillis();
-                    Long CheckStartthishour = getCurrentHourInMillis();
+                    long CheckStartTime = System.currentTimeMillis() - SystemClock.uptimeMillis();
+                    long CheckEndTime = System.currentTimeMillis();
+                    long CheckStartthishour = getCurrentHourInMillis();
 
 
                     List<UsageStats> statsList2 = usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_BEST, CheckStartTime, CheckEndTime);
@@ -326,7 +331,7 @@ public class VsUtilService extends Service {
 
                     for (int i = 0; i < statsList2.size(); i++) {
 
-                        Long D1;
+
 
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
 
@@ -336,14 +341,21 @@ public class VsUtilService extends Service {
                         } else {
 
                             D1 = statsList2.get(i).getTotalTimeInForeground();
+                            D2 = statsList2.get(i).getLastTimeUsed();
+                            D3 = statsList2.get(i).getFirstTimeStamp();
+                            D4 = statsList2.get(i).getFirstTimeStamp();
+
+
+
+
                         }
-                        Log.i("Eric", "2023.09.06 !!!: i=" + i + ":" + statsList2.get(i).getPackageName() + ":" + Long.toString(D1) + ":" + Long.toString(CheckStartTime) + ":" + Long.toString(CheckEndTime));
-                        FileUtil.writeLogToFile(GroupID + "_" + logAppUsingCount + "_AppUsing_" + RecordCurrentTime + ".log", i + 1 + ":" + statsList2.get(i).getPackageName() + ":" + Long.toString(D1) + ":" + TimeUtil.convertMillisToDateTime(CheckStartTime) + ":" + TimeUtil.convertMillisToDateTime(CheckEndTime), true);
+                        Log.i("Eric", i + 1 + ":" + statsList2.get(i).getPackageName() + ":" +TimeUtil.getTimePeriodFromMillis(D1) +":" +TimeUtil.convertMillisToDateTime(D2)+ ":" + TimeUtil.convertMillisToDateTime(CheckStartTime) + ":" + TimeUtil.convertMillisToDateTime(CheckEndTime));
+                        FileUtil.writeLogToFile(GroupID + "_" + logAppUsingCount + "_AppUsing_" + RecordCurrentTime + ".log", i + 1 + ":" + statsList2.get(i).getPackageName() + ":" +TimeUtil.getTimePeriodFromMillis(D1) +":" +TimeUtil.convertMillisToDateTime(D2)+ ":" + TimeUtil.convertMillisToDateTime(CheckStartTime) + ":" + TimeUtil.convertMillisToDateTime(CheckEndTime), true);
 
                     }
                     for (int i = 0; i < statsList3.size(); i++) {
 
-                        Long D1;
+
 
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
 
@@ -351,9 +363,13 @@ public class VsUtilService extends Service {
 
                         } else {
                             D1 = statsList3.get(i).getTotalTimeInForeground();
+                            D2 = statsList3.get(i).getLastTimeUsed();
+                            D3 = statsList3.get(i).getFirstTimeStamp();
+                            D4 = statsList3.get(i).getFirstTimeStamp();
+
                         }
-                        Log.i("Eric", "2023.09.06 !!!: i=" + i + ":" + statsList3.get(i).getPackageName() + ":" + Long.toString(D1) + ":" + Long.toString(CheckStartthishour) + ":" + Long.toString(CheckEndTime));
-                        FileUtil.writeLogToFile(GroupID + "_" + logAppUsingCount + "_AppUsing_" + RecordCurrentTime + ".log", i + 1 + ":" + statsList3.get(i).getPackageName() + ":" + Long.toString(D1) + ":" + TimeUtil.convertMillisToDateTime(CheckStartthishour) + ":" + TimeUtil.convertMillisToDateTime(CheckEndTime), true);
+                        Log.i("Eric", i + 1 + ":" + statsList2.get(i).getPackageName() + ":" +TimeUtil.getTimePeriodFromMillis(D1) +":" +TimeUtil.convertMillisToDateTime(D2)+ ":" + TimeUtil.convertMillisToDateTime(CheckStartthishour) + ":" + TimeUtil.convertMillisToDateTime(CheckEndTime));
+                        FileUtil.writeLogToFile(GroupID + "_" + logAppUsingCount + "_AppUsing_" + RecordCurrentTime + ".log", i + 1 + ":" + statsList3.get(i).getPackageName() + ":" +TimeUtil.getTimePeriodFromMillis(D1) +":" +TimeUtil.convertMillisToDateTime(D2)+ ":" + TimeUtil.convertMillisToDateTime(CheckStartthishour) + ":" + TimeUtil.convertMillisToDateTime(CheckEndTime), true);
 
                     }
 
@@ -576,6 +592,12 @@ public class VsUtilService extends Service {
 
         Log.i("VsUtilService", "!!!!! VsUtilService Sstarted onStartCommand ");
 
+        try {
+            FileUtil.writeLogToFile("VsUtilService_onStartCommand_" + TimeUtil.getCurrentTimeforFilename() + ".log", " Service onStartCommand", true);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
 
 
@@ -583,7 +605,7 @@ public class VsUtilService extends Service {
         }
 
         // 在这里执行您的逻辑
-        Log.i("VsUtilService", "Eric 2023.08.02 Service started on boot.");
+        Log.i("VsUtilService", "VsUtilService Service started on boot.");
 
 
         powerCount=1;
@@ -624,6 +646,12 @@ StartUpdate=false;
     @Override
     public void onDestroy() {
         Log.i("VsUtilService", "!!!!! VsUtilService Service onDestroy");
+        try {
+            FileUtil.writeLogToFile("VsUtilService_onDestroy_" + TimeUtil.getCurrentTimeforFilename() + ".log", " Service onStartCommand", true);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
         handler.removeCallbacks(runnableSystem);
         handler.removeCallbacks(runnablePoewr);
         super.onDestroy();
