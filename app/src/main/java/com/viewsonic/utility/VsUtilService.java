@@ -274,7 +274,7 @@ public class VsUtilService extends Service {
 
             String RecordCurrentTime=TimeUtil.getCurrentTimeforFilename();
             FileUtil.writeLogToFile(GroupID+"_"+logCount+"_"+RecordCurrentTime+".log","1:"+RecordCurrentTime ,true);
-            FileUtil.writeLogToFile(GroupID+"_"+logCount+"_"+RecordCurrentTime+".log","2:" ,true);
+            FileUtil.writeLogToFile(GroupID+"_"+logCount+"_"+RecordCurrentTime+".log","2:SN" ,true);
             FileUtil.writeLogToFile(GroupID+"_"+logCount+"_"+RecordCurrentTime+".log","3:"+NetUtil.getWiFiMacAddress() ,true);
             FileUtil.writeLogToFile(GroupID+"_"+logCount+"_"+RecordCurrentTime+".log","4:"+ Build.MODEL ,true);
             FileUtil.writeLogToFile(GroupID+"_"+logCount+"_"+RecordCurrentTime+".log","5:"+NetUtil.getLocalIPAddress() ,true);
@@ -282,9 +282,9 @@ public class VsUtilService extends Service {
             FileUtil.writeLogToFile(GroupID+"_"+logCount+"_"+RecordCurrentTime+".log","7:"+l.getCurrentLocale() ,true);
             FileUtil.writeLogToFile(GroupID+"_"+logCount+"_"+RecordCurrentTime+".log","8:"+TimeUtil.getCurrentTimeZone() ,true);
             FileUtil.writeLogToFile(GroupID+"_"+logCount+"_"+RecordCurrentTime+".log","9:"+LocaleUtil.getCurrentlanguage() ,true);
-            FileUtil.writeLogToFile(GroupID+"_"+logCount+"_"+RecordCurrentTime+".log","10:"+"Android:44" ,true);
+            FileUtil.writeLogToFile(GroupID+"_"+logCount+"_"+RecordCurrentTime+".log","10:Powerime" ,true);
             FileUtil.writeLogToFile(GroupID+"_"+logCount+"_"+RecordCurrentTime+".log","11:"+Build.VERSION.RELEASE ,true);
-            FileUtil.writeLogToFile(GroupID+"_"+logCount+"_"+RecordCurrentTime+".log","12:xxx"+"Android:44" ,true);
+
 
             logCount++;
             KeyLog=false;
