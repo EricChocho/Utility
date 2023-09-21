@@ -24,6 +24,7 @@ public class AppUsingUtil {
 
             AppOpsManager appOps = (AppOpsManager) cc.getSystemService(Context.APP_OPS_SERVICE);
             int mode = appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, android.os.Process.myUid(), cc.getPackageName());
+            Log.i("Eric","Eric Enter hasUsageStatsPermission Result::"+AppOpsManager.MODE_ALLOWED);
             return mode == AppOpsManager.MODE_ALLOWED;
         }
         catch (Exception e)

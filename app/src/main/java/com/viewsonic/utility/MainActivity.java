@@ -3,6 +3,7 @@ package com.viewsonic.utility;
 
 
 import static com.viewsonic.utility.TimeUtil.getCurrentHourInMillis;
+import static com.viewsonic.utility.VsUtilService.UpDate2;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -228,8 +229,14 @@ public class MainActivity extends AppCompatActivity {
         button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                UpDate2();
+
+                /*
                 Calendar date=Calendar.getInstance();
                 FileUtil.FindLastWorkFolder(date);
+               */
+
                 /*
                // VsUtilService.LogApp();
 

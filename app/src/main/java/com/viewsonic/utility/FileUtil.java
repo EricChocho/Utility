@@ -6,8 +6,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class FileUtil {
 
@@ -25,6 +27,43 @@ public class FileUtil {
         return  success;
 
     }
+
+
+    public static List<File> listZipFiles(File directory) {
+
+        Log.i ("Eric","Eric !!!!!!!!!!!!  22  "+directory);
+
+        List<File> zipFiles = new ArrayList<>();
+
+        if (directory.isDirectory()) {
+            File[] files = directory.listFiles();
+            if (files != null) {
+                for (File file : files) {
+                   // if (file.isDirectory()) {
+                        // 如果是目录，则递归地列出其中的.zip文件
+                     //   zipFiles.addAll(listZipFiles(file));
+                  //  } else {
+                        // 如果是文件且以.zip结尾，则将其添加到列表中
+                        if (file.getName().toLowerCase().endsWith(".zip")) {
+                            zipFiles.add(file);
+                     //   }
+                    }
+                }
+            }
+        }
+
+        return zipFiles;
+    }
+
+
+    public static String getTimestampFromFileName(String fileName) {
+        int underscoreIndex = fileName.indexOf("_");
+        if (underscoreIndex != -1 && fileName.length() > underscoreIndex + 1) {
+            return fileName.substring(underscoreIndex + 1, fileName.length() - 4); // 去掉.zip扩展名
+        }
+        return "";
+    }
+
     static String  findfolder;
     public static String FindLastWorkFolder(Calendar now){
         findfolder="";

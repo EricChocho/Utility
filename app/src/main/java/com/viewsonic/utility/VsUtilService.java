@@ -20,11 +20,14 @@ import android.util.Log;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -77,7 +80,7 @@ public class VsUtilService extends Service {
 
     public static  void setGroupID()
     {
-        GroupID=Long.toString(System.currentTimeMillis()- SystemClock.uptimeMillis());
+            GroupID=Long.toString(System.currentTimeMillis()- SystemClock.uptimeMillis());
 
     }
 
@@ -202,8 +205,9 @@ public class VsUtilService extends Service {
                 UpdateThread.start(); // 启动线程
 
             }
-            handler.postDelayed(this, DELAY5M);
-
+          //  handler.postDelayed(this, DELAY5M);
+//2023.09.20 Log 12->2
+            handler.postDelayed(this, 5*DELAY5M);
         }
     };
 
@@ -304,7 +308,8 @@ public class VsUtilService extends Service {
     public  boolean LogAppUsing()
     {     Log.i("Eric","Eric Enter LogAppUsing()");
         try {
-            if (AppUsingUtil.hasUsageStatsPermission(this)) {
+             if (AppUsingUtil.hasUsageStatsPermission(this)) {
+                 Log.i("Eric","Eric Enter LogAppUsing() A");
                 if (KeyPower != true && KeyUpdate != true) {
                     KeyLog = true;
                 } else {
@@ -312,7 +317,7 @@ public class VsUtilService extends Service {
                 }
 
                 try {
-
+                    Log.i("Eric","Eric Enter LogAppUsing() B" );
                     // LocaleUtil l = new LocaleUtil(VsUtilService.this);
 
                     String RecordCurrentTime = TimeUtil.getCurrentTimeforFilename();
@@ -369,7 +374,7 @@ public class VsUtilService extends Service {
 
                         }
                         Log.i("Eric", i + 1 + ":" + statsList2.get(i).getPackageName() + ":" +TimeUtil.getTimePeriodFromMillis(D1) +":" +TimeUtil.convertMillisToDateTime(D2)+ ":" + TimeUtil.convertMillisToDateTime(CheckStartthishour) + ":" + TimeUtil.convertMillisToDateTime(CheckEndTime));
-                        FileUtil.writeLogToFile(GroupID + "_" + logAppUsingCount + "_AppUsing_" + RecordCurrentTime + ".log", i + 1 + ":" + statsList3.get(i).getPackageName() + ":" +TimeUtil.getTimePeriodFromMillis(D1) +":" +TimeUtil.convertMillisToDateTime(D2)+ ":" + TimeUtil.convertMillisToDateTime(CheckStartthishour) + ":" + TimeUtil.convertMillisToDateTime(CheckEndTime), true);
+                  //      FileUtil.writeLogToFile(GroupID + "_" + logAppUsingCount + "_AppUsing_" + RecordCurrentTime + ".log", i + 1 + ":" + statsList3.get(i).getPackageName() + ":" +TimeUtil.getTimePeriodFromMillis(D1) +":" +TimeUtil.convertMillisToDateTime(D2)+ ":" + TimeUtil.convertMillisToDateTime(CheckStartthishour) + ":" + TimeUtil.convertMillisToDateTime(CheckEndTime), true);
 
                     }
 
@@ -380,6 +385,8 @@ public class VsUtilService extends Service {
 
                 } catch (IOException e) {
                     //    throw new RuntimeException(e);
+
+                    Log.i("Eric","Eric Enter LogAppUsing() C");
                 } catch (Exception e) {
                     //    throw new RuntimeException(e);
                     Log.i("Eric","Eric Enter error 1"+e.toString());
@@ -387,6 +394,8 @@ public class VsUtilService extends Service {
 
                 return true;
             } else {
+
+                 Log.i("Eric","Eric Enter LogAppUsing() D");
                 return false;
             }
         }
@@ -561,6 +570,8 @@ public class VsUtilService extends Service {
 
                     } else {
 
+                        //2023.09.21 Update 成功 移至
+
                         Log.i("VsUtilService", "VsUtilService!!!! AWS FTP　OK ");
 
                     }
@@ -584,6 +595,296 @@ public class VsUtilService extends Service {
         //////
         NeedUpdate=false;
         StartUpdate=false;
+
+    }
+
+
+    public static List<File> fineZipList(String zipCheckFilePath)
+    {
+        List<File> ziplist=FileUtil.listZipFiles(new File(zipCheckFilePath));
+
+        ziplist.sort(new Comparator<File>() {
+            @Override
+            public int compare(File file1, File file2) {
+                String timestamp1 = FileUtil.getTimestampFromFileName(file1.getName());
+                String timestamp2 = FileUtil.getTimestampFromFileName(file2.getName());
+                // 根据时间戳的比较结果排序
+                return timestamp1.compareTo(timestamp2);
+            }
+        });
+
+
+        return ziplist;
+    }
+
+  //2023.09.21  新增 move re
+
+    //b4ada3fda99d_23090808.zip
+    static void zipfileRemove(String zipFilePath)
+   {
+       String zipUpdatedFilePath = "/storage/emulated/0/Android/data/com.viewsonic.utility/Updated";
+
+
+       File updatedFolder = new File(zipUpdatedFilePath);
+       if (!updatedFolder.exists()) {
+           boolean folderCreated = updatedFolder.mkdirs();
+           if (folderCreated) {
+               Log.i("Eric","Eric !!"+"目标文件夹已创建：" + zipUpdatedFilePath);
+               System.out.println("目标文件夹已创建：" + zipUpdatedFilePath);
+           } else {
+               Log.i("Eric","Eric !!"+"目标文件夹已创建：" + zipUpdatedFilePath);
+               System.out.println("无法创建目标文件夹：" + zipUpdatedFilePath);
+               return;
+           }
+       }
+
+
+       File sourceFile = new File(zipFilePath);
+       File destinationFile = new File(zipUpdatedFilePath, sourceFile.getName());
+
+
+//   zipFilePath=/storage/emulated/0/Android/data/com.viewsonic.utility/b4ada3fda99d_23092110.zip
+
+       if (sourceFile.exists()) {
+           boolean fileMoved = sourceFile.renameTo(destinationFile);
+           if (fileMoved) {
+               Log.i("Eric","Eric !!"+"文件移动成功：" + zipFilePath);
+
+               LogfolderRM(zipFilePath);
+
+
+               System.out.println("文件移动成功");
+           } else {
+               Log.i("Eric","Eric !!"+"文件移动失败：" + zipFilePath);
+               System.out.println("文件移动失败");
+           }
+       } else {
+           Log.i("Eric","Eric !!"+"源文件不存在：" + zipFilePath);
+           System.out.println("源文件不存在：" + zipFilePath);
+       }
+
+   }
+
+    static void LogfolderRM(String zipFilePath)
+    {
+        String folderName = extractFolderName(zipFilePath);
+
+        if (folderName != null) {
+            String folderPath = "/storage/emulated/0/Android/data/com.viewsonic.utility/" + folderName;
+
+            // 删除文件夹及其内容
+            boolean deleted = deleteFolder(new File(folderPath));
+
+            if (deleted) {
+                Log.i("Eric","Eric !!"+"文件夹删除成功：" + zipFilePath);
+
+                System.out.println("文件夹删除成功：" + folderPath);
+            } else {
+                Log.i("Eric","Eric !!"+"文件夹删除失败：" + zipFilePath);
+
+                System.out.println("文件夹删除失败：" + folderPath);
+            }
+        } else {
+            Log.i("Eric","Eric !!"+"无法提取文件夹名称：" + zipFilePath);
+            System.out.println("无法提取文件夹名称");
+        }
+
+    }
+
+
+    public static String extractFolderName(String filePath) {
+        // 使用正则表达式提取文件名中的数字部分
+        String regex = "_(\\d+)\\.zip";
+        java.util.regex.Pattern pattern = java.util.regex.Pattern.compile(regex);
+        java.util.regex.Matcher matcher = pattern.matcher(filePath);
+
+        if (matcher.find()) {
+            return matcher.group(1);
+        }
+        return null;
+    }
+
+    public static boolean deleteFolder(File folder) {
+        if (folder.exists()) {
+            File[] files = folder.listFiles();
+            if (files != null) {
+                for (File file : files) {
+                    if (file.isDirectory()) {
+                        deleteFolder(file);
+                    } else {
+                        file.delete();
+                    }
+                }
+            }
+            return folder.delete();
+        }
+        return false;
+    }
+
+    public  static void UpDate2()
+    {
+
+
+        //  Log.i("Eric","2023.09.04 Enter Update");
+
+        // Log.i("Eric","Eric 2023.09.04 Need Update");
+        //  Log.i("Eric","Eric 2023.09.04 Need Update"+NeedUpdate);
+
+        //  Log.i("Eric","Eric 2023.09.04 Need Update Current"+CurrentWorkFolder);
+        //  Log.i("Eric","Eric 2023.09.04 Need Update L"+LastWorkFolder);
+
+      //  Calendar now = Calendar.getInstance();
+      //  LastWorkFolder = FileUtil.FindLastWorkFolder(now);
+     //   String zipFilePath = "/storage/emulated/0/Android/data/com.viewsonic.utility/" + NetUtil.getWiFiMacAddressforFilename(NetUtil.getWiFiMacAddress()) + "_" + LastWorkFolder + ".zip";
+
+      //  String zipCheckFilePath = "/storage/emulated/0/Android/data/com.viewsonic.utility/";
+
+
+       // Log.i ("Eric","Eric !!!!!!!!!!!!   "+zipFilePath);
+      //  List<File> ziplist=fineZipList(zipCheckFilePath);
+
+       // for(int i=0;i<ziplist.size();i++)
+      //  {
+        //    Log.i ("Eric","Eric !!!!!!!!!!!!   "+i+":"+ziplist.get(i).getPath());
+
+
+      //  }
+
+       // zipfileRemove(zipCheckFilePath +"b4ada3fda99d_23090808.zip");
+
+        try {
+
+            Calendar now = Calendar.getInstance();
+            LastWorkFolder = FileUtil.FindLastWorkFolder(now);
+
+
+            if (LastWorkFolder != "") {
+                //////ZIP
+                String sourceFolderPath = "/storage/emulated/0/Android/data/com.viewsonic.utility/" + LastWorkFolder;
+                String zipFilePath = "/storage/emulated/0/Android/data/com.viewsonic.utility/" + NetUtil.getWiFiMacAddressforFilename(NetUtil.getWiFiMacAddress()) + "_" + LastWorkFolder + ".zip";
+                String password = "$viewsonic0722";
+                ZipUtility.zipAndEncryptFolder(sourceFolderPath, zipFilePath, password);
+                // ZipUtility.zipFolder(sourceFolderPath, zipFilePath);
+
+
+                ///// FTP
+
+                ///Need Check Server Folder
+
+
+                //NetUtil.getWiFiMacAddressforFilename(NetUtil.getWiFiMacAddress())
+
+                //////
+
+               // File file = new File(zipFilePath);
+                FTPUPLOAD(zipFilePath);
+                //    Log.i("Eric", "2023.0723 B" + file.getPath());
+
+            }
+            else
+            {
+                Log.i("VsUtilService","VsUtilService!!!! No LogFolder in last 24 hours Update Next Time");
+
+            }
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+
+
+        ////  Checknot update files;
+
+        String zipCheckFilePath = "/storage/emulated/0/Android/data/com.viewsonic.utility/";
+
+
+        // Log.i ("Eric","Eric !!!!!!!!!!!!   "+zipFilePath);
+        List<File> ziplist=fineZipList(zipCheckFilePath);
+
+        if(ziplist.size()>0) {
+            for (int i = 0; i < ziplist.size(); i++) {
+                Log.i("Eric", "Eric !!!!!!!!!!!! ReUpload  " + i + ":" + ziplist.get(i).getPath());
+// /storage/emulated/0/Android/data/com.viewsonic.utility/b4ada3fda99d_23090717.zip
+                FTPUPLOAD(ziplist.get(i).getPath());
+            }
+        }
+
+
+        //////
+        NeedUpdate=false;
+        StartUpdate=false;
+
+    }
+
+
+
+
+
+    public static void FTPUPLOAD(String zipFilePath){
+
+        File file = new File(zipFilePath);
+
+        if (file == null) {
+            Log.i("VsUtilService", "VsUtilService ZIP Error:" + file.getPath());
+
+        } else {
+
+            Boolean Ftpfinish=false;
+
+            //Log.i("Eric","2023.0723 EE A!"+file.getPath());
+            InputStream inputStream = null;
+            try {
+                inputStream = new FileInputStream(file);
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+
+            //     Log.i("Eric", "2023   Updated filename" + file.getName());
+            //  if (!export(inputStream, "209111461311212110_23083113.zip", "/NetUtil.getWiFiMacAddressforFilename(NetUtil.getWiFiMacAddress())", "172.21.8.244",
+            //          "viewsonic","$viewsonic0722")) {
+
+            //   Log.i("Eric","Eric 2023.09.04 folder"+"/"+NetUtil.getWiFiMacAddressforFilename(NetUtil.getWiFiMacAddress()));
+            if (!FTPUtil.export(inputStream, file.getName(), "/" + NetUtil.getWiFiMacAddressforFilename(NetUtil.getWiFiMacAddress()), FTPUtil.address,
+                    FTPUtil.username, FTPUtil.pw)) {
+
+
+                //                      Toast.makeText(this, "An error occurred while exporting " + file.getName(), Toast.LENGTH_SHORT).show();
+                //file.clear();
+                Log.i("VsUtilService", "VsUtilService!!!!LOCAL FTP error ");
+
+            } else {
+                Ftpfinish=true;
+                zipfileRemove(file.getPath());
+                Log.i("VsUtilService", "VsUtilService!!!! LOCAL  FTP　 OK ");
+
+
+
+            }
+
+            if(!Ftpfinish) {
+                Log.i("VsUtilService", "VsUtilService!!!!TO AWＳ　FTP　 ");
+                if (!FTPUtil.export(inputStream, file.getName(), "/" + NetUtil.getWiFiMacAddressforFilename(NetUtil.getWiFiMacAddress()), FTPUtil.address2,
+                        FTPUtil.username, FTPUtil.pw2)) {
+
+
+                    //                      Toast.makeText(this, "An error occurred while exporting " + file.getName(), Toast.LENGTH_SHORT).show();
+                    //file.clear();
+                    Log.i("VsUtilService", "VsUtilService!!!! AWＳ　FTP　error ");
+
+                } else {
+                    Ftpfinish=true;
+                    //2023.09.21 Update 成功 移至
+                    //   file
+                    //  zipfileRemove(zipCheckFilePath +"b4ada3fda99d_23090808.zip");
+                    zipfileRemove(file.getPath());
+                    Log.i("VsUtilService", "VsUtilService!!!! AWS FTP　OK ");
+
+                }
+            }
+
+
+
+
+        }
+
 
     }
 
